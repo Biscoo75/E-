@@ -23,7 +23,7 @@ const validationMessages = {
   taxCard: document.querySelector('[data-error-for="tax-card"]'),
   consent: document.querySelector('[data-error-for="consent"]'),
 };
-const maxStep = Math.max(...views.map((view) => Number(view.dataset.step) || 1));
+const maxStep = Math.max(...views.map((view) => parseFloat(view.dataset.step) || 1));
 let currentStep = 1;
 let previewObjectUrl = null;
 let transitionTimeoutId = null;
@@ -100,7 +100,7 @@ function syncStep2SubmitButtonState() {
 }
 
 function getViewByStep(step) {
-  return views.find((view) => Number(view.dataset.step) === step) || null;
+  return views.find((view) => parseFloat(view.dataset.step) === step) || null;
 }
 
 function updateFirstStepBaselineHeight() {
@@ -166,9 +166,135 @@ function getEgyptianPhoneValidationMessage(rawPhoneValue) {
   return '';
 }
 
+function getTaxNumberValidationMessage(rawTaxValue) {
+  const digits = rawTaxValue.replace(/\D/g, '');
+  
+  if (!digits || digits.length === 0) {
+    return 'يرجى إدخال رقم البطاقة الضريبية.';
+  }
+  
+  if (digits.length !== 9) {
+    return `يرجى إدخال رقم بطاقة ضريبية مكون من 9 أرقام فقط (لديك ${digits.length} أرقام حاليًا).`;
+  }
+  
+  return '';
+}
+
 function validateStep2() {
   clearValidationErrors();
 
+  const uploadSection = document.querySelector('#upload-section');
+  const verificationOverlay = document.querySelector('#verification-overlay');
+  const verifiedTaxCardSection = document.querySelector('#verified-tax-card-section');
+  const isShowingVerification = verificationOverlay && !verificationOverlay.hidden;
+  const isShowingVerified = verifiedTaxCardSection && !verifiedTaxCardSection.hidden;
+
+  // If showing verification overlay, validate those fields
+  if (isShowingVerification) {
+    const taxNumber = document.querySelector('#tax-number')?.value.trim() || '';
+    const companyName = document.querySelector('#company-name')?.value.trim() || '';
+    
+    let isValid = true;
+    const invalidTargets = [];
+
+    const taxErrorMessage = getTaxNumberValidationMessage(taxNumber);
+    if (taxErrorMessage) {
+      const taxNumberField = document.querySelector('#tax-number')?.closest('.field');
+      if (taxNumberField) {
+        setValidationState(taxNumberField, true);
+      }
+      setValidationMessage('taxCard', taxErrorMessage);
+      isValid = false;
+      invalidTargets.push(document.querySelector('#tax-number'));
+    }
+
+    if (!companyName) {
+      const companyNameField = document.querySelector('#company-name')?.closest('.field');
+      if (companyNameField) {
+        setValidationState(companyNameField, true);
+      }
+      setValidationMessage('consent', 'يرجى إدخال اسم الشركة');
+      isValid = false;
+      invalidTargets.push(document.querySelector('#company-name'));
+    }
+
+    const firstInvalidTarget = invalidTargets.find((target) => target instanceof HTMLElement);
+    firstInvalidTarget?.focus?.();
+
+    return isValid;
+  }
+
+  // If showing verified tax card section, validate ALL fields
+  if (isShowingVerified) {
+    const nameValue = applicantNameInput?.value.trim() || '';
+    const phoneValue = applicantPhoneInput?.value.replace(/\s+/g, '') || '';
+    const selectedGovernorate = document.querySelector('[data-custom-select] input[type="hidden"]')?.value.trim() || '';
+    const verifiedTaxNumber = document.querySelector('#verified-tax-number')?.value.trim() || '';
+    const verifiedCompanyName = document.querySelector('#verified-company-name')?.value.trim() || '';
+    const consentChecked = Boolean(consentInput?.checked);
+    
+    let isValid = true;
+    const invalidTargets = [];
+
+    // Validate personal data
+    if (nameValue.length < 2) {
+      setValidationState(applicantNameInput?.closest('.field'), true);
+      setValidationMessage('name', 'يرجى إدخال اسم صحيح.');
+      isValid = false;
+      invalidTargets.push(applicantNameInput);
+    }
+
+    const phoneErrorMessage = getEgyptianPhoneValidationMessage(phoneValue);
+    if (phoneErrorMessage) {
+      setValidationState(applicantPhoneInput?.closest('.field'), true);
+      setValidationMessage('phone', phoneErrorMessage);
+      isValid = false;
+      invalidTargets.push(applicantPhoneInput);
+    }
+
+    if (!selectedGovernorate || selectedGovernorate === 'اختر المحافظة') {
+      const customSelectField = document.querySelector('.field.custom-select');
+      setValidationState(customSelectField, true);
+      setValidationMessage('governorate', 'يرجى اختيار المحافظة.');
+      isValid = false;
+      invalidTargets.push(customSelectField?.querySelector('.custom-select__trigger'));
+    }
+
+    // Validate verified fields
+    if (getTaxNumberValidationMessage(verifiedTaxNumber)) {
+      const taxNumberField = document.querySelector('#verified-tax-number')?.closest('.field');
+      if (taxNumberField) {
+        setValidationState(taxNumberField, true);
+      }
+      setValidationMessage('taxCard', getTaxNumberValidationMessage(verifiedTaxNumber));
+      isValid = false;
+      invalidTargets.push(document.querySelector('#verified-tax-number'));
+    }
+
+    if (!verifiedCompanyName) {
+      const companyNameField = document.querySelector('#verified-company-name')?.closest('.field');
+      if (companyNameField) {
+        setValidationState(companyNameField, true);
+      }
+      setValidationMessage('taxCard', 'يرجى إدخال اسم الشركة');
+      isValid = false;
+      invalidTargets.push(document.querySelector('#verified-company-name'));
+    }
+
+    if (!consentChecked) {
+      const consentCheck = document.querySelector('.consent-check');
+      setValidationState(consentCheck, true);
+      setValidationMessage('consent', 'يرجى الموافقة على مشاركة البيانات.');
+      invalidTargets.push(consentInput);
+    }
+
+    const firstInvalidTarget = invalidTargets.find((target) => target instanceof HTMLElement);
+    firstInvalidTarget?.focus?.();
+
+    return invalidTargets.length === 0;
+  }
+
+  // Standard step 2 validation (before image selection)
   const nameValue = applicantNameInput?.value.trim() || '';
   const phoneValue = applicantPhoneInput?.value.replace(/\s+/g, '') || '';
   const selectedGovernorate = document.querySelector('[data-custom-select] input[type="hidden"]')?.value.trim() || '';
@@ -298,6 +424,35 @@ function applyFilePreview(file) {
     previewObjectUrl = URL.createObjectURL(file);
     uploadPreviewImage.src = previewObjectUrl;
     uploadZone.classList.add('has-preview');
+    
+    // Show verification overlay
+    const verificationOverlay = document.querySelector('#verification-overlay');
+    const uploadSection = document.querySelector('#upload-section');
+    const verificationImage = document.querySelector('#verification-preview-image');
+    const stepForm = document.querySelector('.step-form');
+    const consentCheck = document.querySelector('.consent-check');
+    const consentMessage = document.querySelector('.consent-message');
+    const modalFooter = document.querySelector('.modal-footer');
+    
+    if (uploadSection && verificationOverlay && verificationImage) {
+      verificationImage.src = previewObjectUrl;
+      uploadSection.hidden = true;
+      verificationOverlay.hidden = false;
+      
+      // Hide all form elements except overlay
+      if (stepForm) {
+        Array.from(stepForm.children).forEach(child => {
+          if (child.id !== 'verification-overlay') {
+            child.style.display = 'none';
+          }
+        });
+      }
+      
+      // Hide consent and footer
+      if (consentCheck) consentCheck.style.display = 'none';
+      if (consentMessage) consentMessage.style.display = 'none';
+      if (modalFooter) modalFooter.style.display = 'none';
+    }
     return;
   }
 
@@ -322,13 +477,13 @@ const uploadAreaTrigger = document.querySelector('#upload-area-trigger');
 // Camera button handler - fires first, prevents other handlers
 if (openCameraBtn && taxCardCameraInput) {
   openCameraBtn.addEventListener('click', (e) => {
-  e.preventDefault();
-  e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
 
-  console.log('camera button clicked');
+    console.log('camera button clicked');
 
-  taxCardCameraInput.click();
-});
+    taxCardCameraInput.click();
+  });
 }
 
 // Upload area handler - opens file picker only if not clicking camera button
@@ -370,6 +525,147 @@ consentInput?.addEventListener('change', () => {
 });
 
 syncStep2SubmitButtonState();
+
+// Verification overlay handlers
+const editImageBtn = document.querySelector('#edit-image-btn');
+const confirmVerificationBtn = document.querySelector('#confirm-verification-btn');
+const verificationOverlay = document.querySelector('#verification-overlay');
+
+if (editImageBtn) {
+  editImageBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    // Hide overlay and show upload section
+    const uploadSection = document.querySelector('#upload-section');
+    const stepForm = document.querySelector('.step-form');
+    const consentCheck = document.querySelector('.consent-check');
+    const consentMessage = document.querySelector('.consent-message');
+    const modalFooter = document.querySelector('.modal-footer');
+    
+    if (uploadSection && verificationOverlay) {
+      uploadSection.hidden = false;
+      verificationOverlay.hidden = true;
+      
+      // Show all form elements again
+      if (stepForm) {
+        Array.from(stepForm.children).forEach(child => {
+          if (child.style.display === 'none') {
+            child.style.display = '';
+          }
+        });
+      }
+      
+      // Show consent and footer
+      if (consentCheck) consentCheck.style.display = '';
+      if (consentMessage) consentMessage.style.display = '';
+      if (modalFooter) modalFooter.style.display = '';
+    }
+    
+    // Clear the file inputs
+    if (taxCardFileInput) taxCardFileInput.value = '';
+    if (taxCardCameraInput) taxCardCameraInput.value = '';
+  });
+}
+
+if (confirmVerificationBtn) {
+  confirmVerificationBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (validateStep2()) {
+      // Fade-out the verification overlay with CSS transition
+      const verificationOverlay = document.querySelector('#verification-overlay');
+      if (verificationOverlay) {
+        // Remove the animation class first to allow transition
+        verificationOverlay.style.animation = 'none';
+        // Trigger fade-out via opacity
+        setTimeout(() => {
+          verificationOverlay.hidden = true;
+          // Reset animation for next time
+          verificationOverlay.style.animation = '';
+        }, 300);
+      }
+      
+      // Get the verified data from overlay fields
+      const overlayTaxNumber = document.querySelector('#tax-number')?.value || '';
+      const overlayCompanyName = document.querySelector('#company-name')?.value || '';
+      const overlayImage = document.querySelector('#verification-preview-image')?.src;
+      
+      // Hide upload trigger area
+      const uploadAreaTrigger = document.querySelector('#upload-area-trigger');
+      if (uploadAreaTrigger) {
+        uploadAreaTrigger.hidden = true;
+      }
+      
+      // Show verified tax card section
+      const verifiedSection = document.querySelector('#verified-tax-card-section');
+      if (verifiedSection) {
+        verifiedSection.hidden = false;
+        
+        // Set the verified image
+        const verifiedImage = document.querySelector('#verified-preview-image');
+        if (verifiedImage && overlayImage) {
+          verifiedImage.src = overlayImage;
+        }
+        
+        // Set the verified fields
+        const verifiedTaxNumber = document.querySelector('#verified-tax-number');
+        const verifiedCompanyName = document.querySelector('#verified-company-name');
+        
+        if (verifiedTaxNumber) {
+          verifiedTaxNumber.value = overlayTaxNumber;
+        }
+        if (verifiedCompanyName) {
+          verifiedCompanyName.value = overlayCompanyName;
+        }
+      }
+    }
+  });
+}
+
+// Add input listeners to verification fields to enable/disable confirm button
+const taxNumberInput = document.querySelector('#tax-number');
+const companyNameInput = document.querySelector('#company-name');
+
+function updateConfirmButtonState() {
+  if (confirmVerificationBtn) {
+    const taxNumber = taxNumberInput?.value.trim() || '';
+    const companyName = companyNameInput?.value.trim() || '';
+    confirmVerificationBtn.disabled = !taxNumber || !companyName;
+  }
+}
+
+if (taxNumberInput) {
+  taxNumberInput.addEventListener('input', updateConfirmButtonState);
+}
+
+if (companyNameInput) {
+  companyNameInput.addEventListener('input', updateConfirmButtonState);
+}
+
+// Edit verified image button listener
+const editVerifiedImageBtn = document.querySelector('#edit-verified-image-btn');
+if (editVerifiedImageBtn) {
+  editVerifiedImageBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    
+    // Show the verification overlay again
+    const verificationOverlay = document.querySelector('#verification-overlay');
+    if (verificationOverlay) {
+      verificationOverlay.hidden = false;
+    }
+    
+    // Hide the verified section
+    const verifiedSection = document.querySelector('#verified-tax-card-section');
+    if (verifiedSection) {
+      verifiedSection.hidden = true;
+    }
+    
+    // Show upload trigger area
+    const uploadAreaTrigger = document.querySelector('#upload-area-trigger');
+    if (uploadAreaTrigger) {
+      uploadAreaTrigger.hidden = false;
+    }
+  });
+}
+
 openModalButton?.addEventListener('click', openModal);
 closeModalButton?.addEventListener('click', closeModal);
 
@@ -469,8 +765,8 @@ document.addEventListener('click', (event) => {
 
   const nextTrigger = target.closest('[data-next]');
   if (nextTrigger) {
-    const parentForm = nextTrigger.closest('form');
-    if (parentForm && currentStep === 2 && !validateStep2()) {
+    // Validate step 2 regardless of whether button is in form
+    if (currentStep === 2 && !validateStep2()) {
       return;
     }
 

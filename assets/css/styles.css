@@ -22,7 +22,7 @@
 html,
 body {
   margin: 0;
-  height: 100%; 
+  height: 100%;
   font-family: 'IBM Plex Sans Arabic', sans-serif;
   color: var(--text);
   background: var(--bg);
@@ -241,10 +241,12 @@ body {
   margin: 8px 0;
 }
 
-.modal-view--step2 .field span {
+.modal-view--step2 .field span,
+.taxCard .field span {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 12px;
+  text-align: right;
 }
 
 .modal-view--step2 .field input,
@@ -439,7 +441,7 @@ body {
   position: relative;
   overflow: hidden;
   color: #E6221F;
-  /* background: #ffffff; */
+  background-color:#FCEFEF ;
   cursor: pointer;
   /* padding: 0; */
   width: 70%;
@@ -454,7 +456,7 @@ body {
   justify-content: center;
   gap: 4px;
   padding: 10px 14px;
-  background: #FCEFEF;
+  /* background: #FCEFEF; */
   width: 100%;
   height: 100%;
 }
@@ -718,12 +720,12 @@ body {
 
 .upload-zone.has-error .upload-placeholder {
   border-color: var(--danger);
-  background: #fff7f9;
+  background: #FCEFEF;
 }
 
 .consent-check.has-error .consent-check__text {
   border: 1px solid var(--danger);
-  background: #fff7f9;
+  background: #FCEFEF;
 }
 
 .consent-message {
@@ -967,8 +969,13 @@ body {
   background: var(--line);
 }
 
-.upload-or-divider::before { right: 0; }
-.upload-or-divider::after  { left: 0; }
+.upload-or-divider::before {
+  right: 0;
+}
+
+.upload-or-divider::after {
+  left: 0;
+}
 
 .btn--camera {
   width: fit-content;
@@ -986,6 +993,166 @@ body {
 
 .btn--camera i {
   font-size: 16px;
+}
+
+.verification-preview-image {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border: 2px solid #20A16A;
+  border-radius: 10px;
+}
+.verification-preview-image.final
+{
+  width: 180px;
+  height: 105px;
+  border:0;
+}
+.verification-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  z-index: 999;
+  pointer-events: none;
+  background: #ffffff;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+}
+
+.verification-overlay[hidden] {
+  display: none !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none !important;
+}
+
+.verification-overlay:not([hidden]) {
+  pointer-events: auto;
+  display: flex !important;
+  opacity: 1;
+  visibility: visible;
+  animation: fade-in 0.3s ease-out;
+}
+
+#verified-tax-card-section[hidden] {
+  display: none !important;
+}
+
+#verified-tax-card-section:not([hidden]) {
+  display: flex !important;
+}
+
+/* Show upload section when verified section is hidden */
+#verified-tax-card-section[hidden] ~ #upload-section,
+#upload-section:has(+ #verified-tax-card-section[hidden]) {
+  display: block !important;
+}
+
+/* Show upload trigger when verified section is hidden */
+#verified-tax-card-section[hidden] ~ #upload-area-trigger,
+#upload-area-trigger:has(+ #verified-tax-card-section[hidden]) {
+  display: block !important;
+}
+
+.verification-overlay-backdrop {
+  display: none;
+}
+
+.verification-overlay-content {
+  position: relative;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  border-radius: 0;
+  box-shadow: none;
+  overflow-y: auto;
+  max-height: none;
+  animation: fade-in 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.verification-overlay-inner {
+  padding: 24px 16px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Hide all form content when overlay is shown */
+.modal-view[data-step="2"]:has(#verification-overlay:not([hidden])) .step-form > :not(#verification-overlay),
+.modal-view[data-step="2"]:has(#verification-overlay:not([hidden])) .consent-check,
+.modal-view[data-step="2"]:has(#verification-overlay:not([hidden])) .consent-message,
+.modal-view[data-step="2"]:has(#verification-overlay:not([hidden])) .modal-footer {
+  display: none !important;
+}
+
+/* Show form content when verified section is visible */
+.modal-view[data-step="2"]:has(#verified-tax-card-section:not([hidden])) .step-form > :not(#verification-overlay):not(#upload-section) {
+  display: block !important;
+}
+
+.modal-view[data-step="2"]:has(#verified-tax-card-section:not([hidden])) #upload-section {
+  display: block !important;
+}
+
+.modal-view[data-step="2"]:has(#verified-tax-card-section:not([hidden])) .consent-check {
+  display: flex !important;
+}
+
+.modal-view[data-step="2"]:has(#verified-tax-card-section:not([hidden])) .modal-footer {
+  display: flex !important;
+}
+
+
+.modal-view[data-step="2"]:has(#verified-tax-card-section:not([hidden])) #upload-area-trigger {
+  display: none !important;
+}
+
+/* Ensure verified section is visible inside upload-zone */
+.modal-view[data-step="2"]:has(#verified-tax-card-section:not([hidden])) #verified-tax-card-section {
+  display: flex !important;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-in {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes view-in {
@@ -1020,7 +1187,7 @@ body {
 
   .btn {
     height: 44px;
-    font-size: clamp(14px, 2.6vw, 22px);
+    font-size: 16px;
   }
 
   .intro-card {
@@ -1126,8 +1293,6 @@ body {
     bottom: 0;
     z-index: 20;
     margin-top: 0;
-    background: #fff;
-    box-shadow: 0 -10px 24px rgba(19, 23, 34, 0.08);
   }
 
   .modal-shell[data-active-step="2"] .modal-view--step2.is-active {
@@ -1136,7 +1301,6 @@ body {
   }
 
   .modal-shell[data-active-step="2"] .modal-view--step2 .step-form {
-    min-height: 100%;
     display: flex;
     flex-direction: column;
     padding-bottom: 0;
@@ -1177,7 +1341,7 @@ body {
 
   .btn,
   .submission-btn {
-    height: 44px;
+    height: 48px;
   }
 
   .field input,
@@ -1188,7 +1352,7 @@ body {
 
   .modal-view--step2 .upload-placeholder {
     width: 100%;
-  height: 196px;
+    height: 196px;
   }
 
   .modal-view--step2 .title-sub {
@@ -1200,10 +1364,11 @@ body {
     font-size: 24px;
     font-weight: 700;
   }
-.consent-check__text
-{
-  font-size: 16px;
-}
+
+  .consent-check__text {
+    font-size: 16px;
+  }
+
   @media (max-height: 700px) {
     .modal-shell[data-active-step="2"] .modal-view--step2 .step2-footer .btn {
       height: 42px;

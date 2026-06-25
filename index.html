@@ -105,7 +105,8 @@
                     </footer>
                 </section>
 
-                <section class="modal-view modal-view--step2 pt-4" data-step="2" aria-hidden="true">
+                <section class="modal-view modal-view--step2 pt-4" data-step="2" aria-hidden="true"
+                    style="position: relative;">
                     <form class="step-form" novalidate>
                         <h2 class="title-sub px-4">تأكيد بياناتك الشخصية</h2>
 
@@ -249,13 +250,15 @@
                             </label>
                         </div>
 
-                        <div class="upload-zone px-4">
+                        <div class="upload-zone px-4" id="upload-section">
                             <p class="upload-zone__label"><em>*</em> صورة البطاقة الضريبية </p>
                             <input id="tax-card-file" class="upload-input" type="file" accept=".png,.jpg,.jpeg,.pdf"
                                 required />
                             <input id="tax-card-camera" class="upload-input" type="file" accept="image/*"
                                 capture="environment" />
-                            <div id="upload-area-trigger" class="flex flex-col upload-placeholder upload-empty-state p-4" role="button" tabindex="0" aria-label="رفع مستند">
+                            <div id="upload-area-trigger"
+                                class="flex flex-col upload-placeholder upload-empty-state p-4" role="button"
+                                tabindex="0" aria-label="رفع مستند">
                                 <div class="flex  flex ">
                                     <span class="upload-empty-state">
                                         <i class="fa-solid fa-arrow-up-from-bracket" aria-hidden="true"></i>
@@ -276,7 +279,84 @@
                                     </button>
                                 </div>
                             </div>
+
+                            <div id="verified-tax-card-section" hidden class="flex flex-col gap-4">
+                                <div class="flex justify-start mb-4 w-full">
+                                    <img id="verified-preview-image" class="verification-preview-image final"
+                                        alt="معاينة الصورة" />
+                                </div>
+                                <label class="field">
+                                    <span><em>*</em> رقم البطاقة الضريبية (9 أرقام)</span>
+                                    <input id="verified-tax-number" type="text" placeholder="123456789" inputmode="numeric" required />
+                                    <span class="field-message" data-error-for="tax-number" hidden></span>
+                                </label>
+                                <label class="field">
+                                    <span><em>*</em> اسم الشركة </span>
+                                    <input id="verified-company-name" type="text" placeholder="اسم الشركة" required />
+                                    <span class="field-message" data-error-for="company-name" hidden></span>
+                                </label>
+                            </div>
+
                             <span class="field-message upload-zone__message" data-error-for="tax-card" hidden></span>
+                        </div>
+
+                        <div id="verification-overlay" hidden class="verification-overlay">
+                            <div class="verification-overlay-backdrop"></div>
+                            <div class="verification-overlay-content">
+                                <div class="verification-overlay-inner">
+                                    <div class="flex flex-col justify-between gap-4 w-full">
+                                        <div class="flex justify-center mb-6 w-full">
+                                            <img id="verification-preview-image" class="verification-preview-image"
+                                                alt="معاينة الصورة" />
+                                        </div>
+                                        <div
+                                            class="flex flex-col gap-4 w-full border border-[#ECEAEF] rounded-lg p-4 bg-[#fff] mb-4">
+                                            <div class="flex flex-col items-center justify-center w-full">
+                                                <div class="submission-icon-wrap" aria-hidden="true">
+                                                    <i class="fa-solid fa-check"></i>
+                                                </div>
+                                                <h3 class="submission-heading text-center"
+                                                    style="color: #0C5133; margin-bottom: 16px;">تم التعرف بنجاح على
+                                                    الرويةية</h3>
+                                                <p class="text-[16px] text-[#000] text-start mb-4">
+                                                    تمت مطابقة المستند والتحقق من صحته. يرجى مراجعة البيانات المستخرجة
+                                                    وتأكيدها:
+                                                </p>
+                                            </div>
+                                            <form class="taxCard" novalidate
+                                                style="display: flex; flex-direction: column; gap: 16px;">
+                                                <label class="field">
+                                                    <span><em>*</em> رقم البطاقة الضريبية (9 أرقام)</span>
+                                                    <input id="tax-number" type="text" placeholder="123456789" inputmode="numeric"
+                                                        required />
+                                                    <span class="field-message" data-error-for="tax-number"
+                                                        hidden></span>
+                                                </label>
+                                                <label class="field">
+                                                    <span><em>*</em> اسم الشركة </span>
+                                                    <input id="company-name" type="text" placeholder="اسم الشركة"
+                                                        required />
+                                                    <span class="field-message" data-error-for="company-name"
+                                                        hidden></span>
+                                                </label>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-3 w-full">
+                                        <button id="confirm-verification-btn"
+                                            class="btn btn--primary submission-btn flex items-center gap-2 justify-center"
+                                            type="button"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19"
+                                                viewBox="0 0 19 19" fill="none">
+                                                <path
+                                                    d="M17.4167 8.32144V9.0881C17.4156 10.8851 16.8338 12.6337 15.7578 14.073C14.6818 15.5122 13.1694 16.5652 11.4461 17.0747C9.72286 17.5842 7.88105 17.523 6.19539 16.9003C4.50973 16.2775 3.07055 15.1265 2.09247 13.619C1.11439 12.1115 0.649826 10.3282 0.768064 8.53503C0.886302 6.74191 1.58101 5.03504 2.74857 3.669C3.91613 2.30295 5.49399 1.35092 7.24682 0.954892C8.99966 0.558861 10.8336 0.740051 12.475 1.47144M17.4167 2.42144L9.08334 10.7631L6.58334 8.2631"
+                                                    stroke="#FAFAFA" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+                                            تأكيد واستمرار الخطوة
+                                            التالية</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <label class="consent-check px-4 mb-4" aria-label="الموافقة على مشاركة البيانات">
@@ -291,6 +371,8 @@
                         </footer>
                     </form>
                 </section>
+
+
 
                 <section class="modal-view" data-step="3" aria-hidden="true">
                     <div class="submission-body submission-body--compact">
