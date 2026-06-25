@@ -16,6 +16,40 @@ const applicantNameInput = document.querySelector('#applicant-name');
 const applicantPhoneInput = document.querySelector('#applicant-phone');
 const consentInput = document.querySelector('.consent-check__input');
 const step2SubmitButton = document.querySelector('.modal-view--step2 [data-next]');
+
+// Governorates data
+const governoratesData = [
+  { "id": "10000000-0000-4000-a000-000000000001", "name": "القاهرة" },
+  { "id": "10000000-0000-4000-a000-000000000002", "name": "الإسكندرية" },
+  { "id": "10000000-0000-4000-a000-000000000003", "name": "الجيزة" },
+  { "id": "10000000-0000-4000-a000-000000000004", "name": "الدقهلية" },
+  { "id": "10000000-0000-4000-a000-000000000005", "name": "الشرقية" },
+  { "id": "10000000-0000-4000-a000-000000000006", "name": "البحيرة" },
+  { "id": "10000000-0000-4000-a000-000000000007", "name": "الغربية" },
+  { "id": "10000000-0000-4000-a000-000000000008", "name": "المنوفية" },
+  { "id": "10000000-0000-4000-a000-000000000009", "name": "القليوبية" },
+  { "id": "10000000-0000-4000-a000-000000000010", "name": "دمياط" },
+  { "id": "10000000-0000-4000-a000-000000000011", "name": "كفر الشيخ" },
+  { "id": "10000000-0000-4000-a000-000000000012", "name": "بورسعيد" },
+  { "id": "10000000-0000-4000-a000-000000000013", "name": "الإسماعيلية" },
+  { "id": "10000000-0000-4000-a000-000000000014", "name": "السويس" },
+  { "id": "10000000-0000-4000-a000-000000000015", "name": "شمال سيناء" },
+  { "id": "10000000-0000-4000-a000-000000000016", "name": "جنوب سيناء" },
+  { "id": "10000000-0000-4000-a000-000000000017", "name": "الفيوم" },
+  { "id": "10000000-0000-4000-a000-000000000018", "name": "بني سويف" },
+  { "id": "10000000-0000-4000-a000-000000000019", "name": "المنيا" },
+  { "id": "10000000-0000-4000-a000-000000000020", "name": "أسيوط" },
+  { "id": "10000000-0000-4000-a000-000000000021", "name": "سوهاج" },
+  { "id": "10000000-0000-4000-a000-000000000022", "name": "قنا" },
+  { "id": "10000000-0000-4000-a000-000000000023", "name": "الأقصر" },
+  { "id": "10000000-0000-4000-a000-000000000024", "name": "أسوان" },
+  { "id": "10000000-0000-4000-a000-000000000025", "name": "البحر الأحمر" },
+  { "id": "10000000-0000-4000-a000-000000000026", "name": "الوادي الجديد" },
+  { "id": "10000000-0000-4000-a000-000000000027", "name": "مطروح" }
+];
+
+let uploadedImageUrl = null;
+
 const validationMessages = {
   name: document.querySelector('[data-error-for="name"]'),
   phone: document.querySelector('[data-error-for="phone"]'),
@@ -592,6 +626,9 @@ if (confirmVerificationBtn) {
       const overlayCompanyName = document.querySelector('#company-name')?.value || '';
       const overlayImage = document.querySelector('#verification-preview-image')?.src;
       
+      // Store the image URL for API submission
+      uploadedImageUrl = overlayImage;
+      
       // Hide upload trigger area
       const uploadAreaTrigger = document.querySelector('#upload-area-trigger');
       if (uploadAreaTrigger) {
@@ -757,6 +794,127 @@ if (modalStage) {
   modalStage.dataset.activeStep = String(currentStep);
 }
 
+function resetForm() {
+  // Clear form fields
+  if (applicantNameInput) applicantNameInput.value = '';
+  if (applicantPhoneInput) applicantPhoneInput.value = '';
+  if (consentInput) consentInput.checked = false;
+  
+  // Reset governorate
+  const governorateInput = document.querySelector('[data-custom-select] input[type="hidden"]');
+  if (governorateInput) governorateInput.value = 'اختر المحافظة';
+  const governorateButton = document.querySelector('.custom-select__value');
+  if (governorateButton) governorateButton.textContent = 'اختر المحافظة';
+  
+  // Reset overlay and verified fields
+  document.querySelector('#tax-number').value = '';
+  document.querySelector('#company-name').value = '';
+  document.querySelector('#verified-tax-number').value = '';
+  document.querySelector('#verified-company-name').value = '';
+  
+  // Reset file upload state
+  uploadedImageUrl = null;
+  if (previewObjectUrl) {
+    URL.revokeObjectURL(previewObjectUrl);
+    previewObjectUrl = null;
+  }
+  
+  const taxCardFileInput = document.querySelector('#tax-card-file');
+  const taxCardCameraInput = document.querySelector('#tax-card-camera');
+  if (taxCardFileInput) taxCardFileInput.value = '';
+  if (taxCardCameraInput) taxCardCameraInput.value = '';
+  
+  // Hide verification overlay
+  const verificationOverlay = document.querySelector('#verification-overlay');
+  if (verificationOverlay) verificationOverlay.hidden = true;
+  
+  // Hide verified section
+  const verifiedSection = document.querySelector('#verified-tax-card-section');
+  if (verifiedSection) verifiedSection.hidden = true;
+  
+  // Show upload section
+  const uploadSection = document.querySelector('#upload-section');
+  if (uploadSection) uploadSection.hidden = false;
+  
+  // Show upload trigger
+  const uploadAreaTrigger = document.querySelector('#upload-area-trigger');
+  if (uploadAreaTrigger) uploadAreaTrigger.hidden = false;
+  
+  // Show form elements
+  const stepForm = document.querySelector('.step-form');
+  if (stepForm) {
+    Array.from(stepForm.children).forEach(child => {
+      if (child.style) child.style.display = '';
+    });
+  }
+  
+  // Show consent and footer
+  const consentCheck = document.querySelector('.consent-check');
+  const consentMessage = document.querySelector('.consent-message');
+  const modalFooter = document.querySelector('.modal-footer.step2-footer');
+  if (consentCheck) consentCheck.style.display = '';
+  if (consentMessage) consentMessage.style.display = '';
+  if (modalFooter) modalFooter.style.display = '';
+  
+  // Clear validation errors
+  clearValidationErrors();
+}
+
+async function submitFormToAPI() {
+  try {
+    // Get form data
+    const name = applicantNameInput?.value.trim() || '';
+    const phone = applicantPhoneInput?.value.replace(/\s+/g, '') || '';
+    const governorateName = document.querySelector('[data-custom-select] input[type="hidden"]')?.value.trim() || '';
+    const taxNumber = document.querySelector('#verified-tax-number')?.value.trim() || '';
+    const companyName = document.querySelector('#verified-company-name')?.value.trim() || '';
+    const consentChecked = Boolean(consentInput?.checked);
+    
+    // Find governorate ID
+    const governorate = governoratesData.find(g => g.name === governorateName);
+    const governorateId = governorate?.id || '';
+    
+    // Format phone number with +2 prefix
+    const mobileNumber = phone.startsWith('+') ? phone : '+2' + phone;
+    
+    // Prepare API request body
+    const requestBody = {
+      name: name,
+      mobileNumber: mobileNumber,
+      governorateId: governorateId,
+      taxRegistrationNumber: taxNumber,
+      companyName: companyName,
+      taxCardImageUrl: uploadedImageUrl,
+      consentToDataSharing: consentChecked
+    };
+    
+    console.log('Submitting form:', requestBody);
+    
+    // Call API
+    const response = await fetch('http://192.168.50.20:30010/api/partners/eand/sme-leads', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+    
+    const data = await response.json();
+    
+    if (response.status === 201 && data.status === 201) {
+      // Success - move to step 3
+      setActiveStep(3);
+    } else {
+      // Error - show error message
+      console.error('API Error:', data);
+      alert('حدث خطأ في إرسال الطلب. يرجى المحاولة مرة أخرى.');
+    }
+  } catch (error) {
+    console.error('Submit error:', error);
+    alert('حدث خطأ في الاتصال بالخادم. يرجى التحقق من الاتصال وحاول مرة أخرى.');
+  }
+}
+
 document.addEventListener('click', (event) => {
   const target = event.target;
   if (!(target instanceof HTMLElement)) {
@@ -774,6 +932,12 @@ document.addEventListener('click', (event) => {
       return;
     }
 
+    // If on step 2, submit to API
+    if (currentStep === 2) {
+      submitFormToAPI();
+      return;
+    }
+
     setActiveStep(currentStep + 1);
   }
 
@@ -782,6 +946,7 @@ document.addEventListener('click', (event) => {
   }
 
   if (target.closest('[data-reset]')) {
+    resetForm();
     setActiveStep(1);
   }
 
