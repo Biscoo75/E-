@@ -21,6 +21,10 @@ const validationMessages = {
   phone: document.querySelector('[data-error-for="phone"]'),
   governorate: document.querySelector('[data-error-for="governorate"]'),
   taxCard: document.querySelector('[data-error-for="tax-card"]'),
+  'tax-number': document.querySelector('[data-error-for="tax-number"]'),
+  'company-name': document.querySelector('[data-error-for="company-name"]'),
+  'verified-tax-number': document.querySelector('[data-error-for="verified-tax-number"]'),
+  'verified-company-name': document.querySelector('[data-error-for="verified-company-name"]'),
   consent: document.querySelector('[data-error-for="consent"]'),
 };
 const maxStep = Math.max(...views.map((view) => parseFloat(view.dataset.step) || 1));
@@ -203,7 +207,7 @@ function validateStep2() {
       if (taxNumberField) {
         setValidationState(taxNumberField, true);
       }
-      setValidationMessage('taxCard', taxErrorMessage);
+      setValidationMessage('tax-number', taxErrorMessage);
       isValid = false;
       invalidTargets.push(document.querySelector('#tax-number'));
     }
@@ -213,7 +217,7 @@ function validateStep2() {
       if (companyNameField) {
         setValidationState(companyNameField, true);
       }
-      setValidationMessage('consent', 'يرجى إدخال اسم الشركة');
+      setValidationMessage('company-name', 'يرجى إدخال اسم الشركة');
       isValid = false;
       invalidTargets.push(document.querySelector('#company-name'));
     }
@@ -266,7 +270,7 @@ function validateStep2() {
       if (taxNumberField) {
         setValidationState(taxNumberField, true);
       }
-      setValidationMessage('taxCard', getTaxNumberValidationMessage(verifiedTaxNumber));
+      setValidationMessage('verified-tax-number', getTaxNumberValidationMessage(verifiedTaxNumber));
       isValid = false;
       invalidTargets.push(document.querySelector('#verified-tax-number'));
     }
@@ -276,7 +280,7 @@ function validateStep2() {
       if (companyNameField) {
         setValidationState(companyNameField, true);
       }
-      setValidationMessage('taxCard', 'يرجى إدخال اسم الشركة');
+      setValidationMessage('verified-company-name', 'يرجى إدخال اسم الشركة');
       isValid = false;
       invalidTargets.push(document.querySelector('#verified-company-name'));
     }
