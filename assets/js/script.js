@@ -951,8 +951,7 @@ document.addEventListener('click', (event) => {
   }
 
   if (target.closest('[data-reset]')) {
-    resetForm();
-    setActiveStep(1);
+    window.location.reload();
   }
 
   if (target.closest('.pill')) {
