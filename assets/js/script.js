@@ -463,6 +463,9 @@ function applyFilePreview(file) {
     uploadPreviewImage.src = previewObjectUrl;
     uploadZone.classList.add('has-preview');
     
+    // Store the blob URL for API submission
+    uploadedImageUrl = previewObjectUrl;
+    
     // Show verification overlay
     const verificationOverlay = document.querySelector('#verification-overlay');
     const uploadSection = document.querySelector('#upload-section');
@@ -626,9 +629,6 @@ if (confirmVerificationBtn) {
       const overlayCompanyName = document.querySelector('#company-name')?.value || '';
       const overlayImage = document.querySelector('#verification-preview-image')?.src;
       
-      // Store the image URL for API submission
-      uploadedImageUrl = overlayImage;
-      
       // Hide upload trigger area
       const uploadAreaTrigger = document.querySelector('#upload-area-trigger');
       if (uploadAreaTrigger) {
@@ -640,7 +640,7 @@ if (confirmVerificationBtn) {
       if (verifiedSection) {
         verifiedSection.hidden = false;
         
-        // Set the verified image
+        // Set the verified image using the blob URL for display only
         const verifiedImage = document.querySelector('#verified-preview-image');
         if (verifiedImage && overlayImage) {
           verifiedImage.src = overlayImage;
@@ -877,6 +877,11 @@ async function submitFormToAPI() {
     // Format phone number with +2 prefix
     const mobileNumber = phone.startsWith('+') ? phone : '+2' + phone;
     
+    // Remove "blob:" prefix from image URL if present
+    const imageUrl = uploadedImageUrl?.startsWith('blob:') 
+      ? uploadedImageUrl.substring(5) 
+      : uploadedImageUrl;
+    
     // Prepare API request body
     const requestBody = {
       name: name,
@@ -884,7 +889,7 @@ async function submitFormToAPI() {
       governorateId: governorateId,
       taxRegistrationNumber: taxNumber,
       companyName: companyName,
-      taxCardImageUrl: uploadedImageUrl,
+      taxCardImageUrl: imageUrl,
       consentToDataSharing: consentChecked
     };
     
