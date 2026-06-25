@@ -1008,6 +1008,40 @@ body {
   height: 105px;
   border:0;
 }
+
+.verification-image-wrap {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.verification-image-wrap--final {
+  width: 180px;
+}
+
+.verification-remove-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #E53935;
+  color: #fff;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s ease;
+  z-index: 2;
+}
+
+.verification-remove-btn:hover {
+  background: #c62828;
+}
 .verification-overlay {
   position: absolute;
   top: 0;

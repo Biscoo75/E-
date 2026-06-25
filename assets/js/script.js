@@ -607,6 +607,55 @@ if (editImageBtn) {
   });
 }
 
+// Remove verification image (X button) - returns to upload empty state
+const removeVerificationImageBtn = document.querySelector('#remove-verification-image');
+if (removeVerificationImageBtn) {
+  removeVerificationImageBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const uploadSection = document.querySelector('#upload-section');
+    const stepForm = document.querySelector('.step-form');
+    const consentCheck = document.querySelector('.consent-check');
+    const consentMessage = document.querySelector('.consent-message');
+    const modalFooter = document.querySelector('.modal-footer');
+
+    if (uploadSection && verificationOverlay) {
+      uploadSection.hidden = false;
+      verificationOverlay.hidden = true;
+
+      // Show all form elements again
+      if (stepForm) {
+        Array.from(stepForm.children).forEach(child => {
+          if (child.style.display === 'none') {
+            child.style.display = '';
+          }
+        });
+      }
+
+      // Show consent and footer
+      if (consentCheck) consentCheck.style.display = '';
+      if (consentMessage) consentMessage.style.display = '';
+      if (modalFooter) modalFooter.style.display = '';
+    }
+
+    // Reset upload area back to empty state
+    if (uploadZone) uploadZone.classList.remove('has-preview');
+    if (uploadPreviewImage) uploadPreviewImage.removeAttribute('src');
+
+    // Clear preview and stored image
+    if (previewObjectUrl) {
+      URL.revokeObjectURL(previewObjectUrl);
+      previewObjectUrl = null;
+    }
+    uploadedImageUrl = null;
+
+    // Clear the file inputs
+    if (taxCardFileInput) taxCardFileInput.value = '';
+    if (taxCardCameraInput) taxCardCameraInput.value = '';
+  });
+}
+
 if (confirmVerificationBtn) {
   confirmVerificationBtn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -704,6 +753,65 @@ if (editVerifiedImageBtn) {
     if (uploadAreaTrigger) {
       uploadAreaTrigger.hidden = false;
     }
+  });
+}
+
+// Remove verified image (X button on verified section) - returns to upload empty state
+const removeVerifiedImageBtn = document.querySelector('#remove-verified-image');
+if (removeVerifiedImageBtn) {
+  removeVerifiedImageBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const verificationOverlay = document.querySelector('#verification-overlay');
+    const verifiedSection = document.querySelector('#verified-tax-card-section');
+    const uploadSection = document.querySelector('#upload-section');
+    const uploadAreaTrigger = document.querySelector('#upload-area-trigger');
+    const stepForm = document.querySelector('.step-form');
+    const consentCheck = document.querySelector('.consent-check');
+    const consentMessage = document.querySelector('.consent-message');
+    const modalFooter = document.querySelector('.modal-footer');
+
+    // Hide overlay and verified section
+    if (verificationOverlay) verificationOverlay.hidden = true;
+    if (verifiedSection) verifiedSection.hidden = true;
+
+    // Show upload section and trigger (empty state)
+    if (uploadSection) uploadSection.hidden = false;
+    if (uploadAreaTrigger) uploadAreaTrigger.hidden = false;
+
+    // Show all form elements again
+    if (stepForm) {
+      Array.from(stepForm.children).forEach(child => {
+        if (child.style.display === 'none') {
+          child.style.display = '';
+        }
+      });
+    }
+    if (consentCheck) consentCheck.style.display = '';
+    if (consentMessage) consentMessage.style.display = '';
+    if (modalFooter) modalFooter.style.display = '';
+
+    // Reset upload area back to empty state
+    if (uploadZone) uploadZone.classList.remove('has-preview');
+    if (uploadPreviewImage) uploadPreviewImage.removeAttribute('src');
+
+    // Clear preview and stored image
+    if (previewObjectUrl) {
+      URL.revokeObjectURL(previewObjectUrl);
+      previewObjectUrl = null;
+    }
+    uploadedImageUrl = null;
+
+    // Clear the file inputs
+    if (taxCardFileInput) taxCardFileInput.value = '';
+    if (taxCardCameraInput) taxCardCameraInput.value = '';
+
+    // Clear verified field values
+    const verifiedTaxNumber = document.querySelector('#verified-tax-number');
+    const verifiedCompanyName = document.querySelector('#verified-company-name');
+    if (verifiedTaxNumber) verifiedTaxNumber.value = '';
+    if (verifiedCompanyName) verifiedCompanyName.value = '';
   });
 }
 
