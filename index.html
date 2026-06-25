@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تقديم تمويل مع إرادة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <main class="page-wrap">
+        <button class="modal-launch-btn" type="button" id="open-modal-btn">
+            ابدأ طلب التمويل
+        </button>
+
+        <dialog class="modal-shell" aria-labelledby="modal-title" aria-describedby="modal-description">
+            <header class="modal-topbar">
+
+                <h1 id="modal-title" class="title-main">قدم على تمويل مع إرادة فاينانس</h1>
+
+                <div class="brand-row">
+                    <img src="./assets/img/erada.svg" alt="Erada" class="brand-logo brand-logo--erada" />
+                    <span class="divider" aria-hidden="true"></span>
+                    <img src="./assets/img/e&.svg" alt="E and" class="brand-logo brand-logo--eand" />
+                    <button class="close-btn" type="button" aria-label="إغلاق">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="modal-stage">
+                <section class="modal-view is-active" data-step="1">
+                    <div class="w-full flex justify-center">
+                        <div class="intro-card md:w-fit w-full">
+                            <div class="flex flex-col items-center gap-2">
+                                <img src="./assets/img/erda-fav.svg" alt="FRA" class="era-fav" />
+                                <h2>مول مشروعك مع ارادة فاينانس</h2>
+                            </div>
+                            <ul class="benefits space-y-4 ">
+                                <li class="flex items-center gap-2 text-[16px]">
+                                    <div
+                                        class="flex items-center justify-center bg-[#F2EFFB] p-2 rounded-full w-[36px] h-[36px]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="22"
+                                            viewBox="0 0 16 22" fill="none">
+                                            <path
+                                                d="M5.73854 19.4172L13.0698 10.6339H7.40313L8.43021 2.59427L1.87813 12.0505H6.80104L5.73854 19.4172ZM5.17754 13.4672H0.948793C0.564404 13.4672 0.285792 13.2995 0.112959 12.9643C-0.0598743 12.629 -0.0343745 12.3074 0.189459 11.9995L8.16388 0.4466C8.30838 0.243544 8.48782 0.108961 8.70221 0.0428499C8.9166 -0.0232612 9.14326 -0.0128726 9.38221 0.0740163C9.62115 0.160905 9.79352 0.304461 9.89929 0.504683C10.0051 0.704905 10.0438 0.923544 10.0155 1.1606L9.01954 9.21718H14.0997C14.4964 9.21718 14.7773 9.39805 14.9426 9.75977C15.1088 10.1215 15.064 10.4568 14.808 10.7656L5.93404 21.3949C5.78293 21.5743 5.60065 21.689 5.38721 21.7391C5.17282 21.7882 4.96126 21.766 4.75254 21.6725C4.54382 21.58 4.38421 21.4397 4.27371 21.2518C4.16415 21.0638 4.12401 20.8513 4.15329 20.6143L5.17754 13.4672Z"
+                                                fill="#7541CA" />
+                                        </svg>
+                                    </div>
+                                    موافقة سريعة خلال 24 ل 72 ساعة
+                                </li>
+                                <li class="flex items-center gap-2 text-[16px]">
+                                    <div
+                                        class="flex items-center justify-center bg-[#F2EFFB] p-2 rounded-full w-[36px] h-[36px]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none">
+                                            <path
+                                                d="M10.5 8C10.106 8 9.71593 8.0776 9.35195 8.22836C8.98797 8.37913 8.65726 8.6001 8.37868 8.87868C8.1001 9.15726 7.87913 9.48797 7.72836 9.85195C7.5776 10.2159 7.5 10.606 7.5 11C7.5 11.394 7.5776 11.7841 7.72836 12.1481C7.87913 12.512 8.1001 12.8427 8.37868 13.1213C8.65726 13.3999 8.98797 13.6209 9.35195 13.7716C9.71593 13.9224 10.106 14 10.5 14C11.2956 14 12.0587 13.6839 12.6213 13.1213C13.1839 12.5587 13.5 11.7956 13.5 11C13.5 10.2044 13.1839 9.44129 12.6213 8.87868C12.0587 8.31607 11.2956 8 10.5 8ZM9 11C9 10.6022 9.15804 10.2206 9.43934 9.93934C9.72064 9.65804 10.1022 9.5 10.5 9.5C10.8978 9.5 11.2794 9.65804 11.5607 9.93934C11.842 10.2206 12 10.6022 12 11C12 11.3978 11.842 11.7794 11.5607 12.0607C11.2794 12.342 10.8978 12.5 10.5 12.5C10.1022 12.5 9.72064 12.342 9.43934 12.0607C9.15804 11.7794 9 11.3978 9 11ZM2 7.25C2 6.65326 2.23705 6.08097 2.65901 5.65901C3.08097 5.23705 3.65326 5 4.25 5H16.75C17.0455 5 17.3381 5.0582 17.611 5.17127C17.884 5.28434 18.1321 5.45008 18.341 5.65901C18.5499 5.86794 18.7157 6.11598 18.8287 6.38896C18.9418 6.66194 19 6.95453 19 7.25V14.75C19 15.0455 18.9418 15.3381 18.8287 15.611C18.7157 15.884 18.5499 16.1321 18.341 16.341C18.1321 16.5499 17.884 16.7157 17.611 16.8287C17.3381 16.9418 17.0455 17 16.75 17H4.25C3.65326 17 3.08097 16.7629 2.65901 16.341C2.23705 15.919 2 15.3467 2 14.75V7.25ZM4.25 6.5C4.05109 6.5 3.86032 6.57902 3.71967 6.71967C3.57902 6.86032 3.5 7.05109 3.5 7.25V8H4.25C4.44891 8 4.63968 7.92098 4.78033 7.78033C4.92098 7.63968 5 7.44891 5 7.25V6.5H4.25ZM3.5 12.5H4.25C4.84674 12.5 5.41903 12.7371 5.84099 13.159C6.26295 13.581 6.5 14.1533 6.5 14.75V15.5H14.5V14.75C14.5 14.1533 14.7371 13.581 15.159 13.159C15.581 12.7371 16.1533 12.5 16.75 12.5H17.5V9.5H16.75C16.1533 9.5 15.581 9.26295 15.159 8.84099C14.7371 8.41903 14.5 7.84674 14.5 7.25V6.5H6.5V7.25C6.5 7.54547 6.4418 7.83805 6.32873 8.11104C6.21566 8.38402 6.04992 8.63206 5.84099 8.84099C5.63206 9.04992 5.38402 9.21566 5.11104 9.32873C4.83806 9.4418 4.54547 9.5 4.25 9.5H3.5V12.5ZM17.5 8V7.25C17.5 7.05109 17.421 6.86032 17.2803 6.71967C17.1397 6.57902 16.9489 6.5 16.75 6.5H16V7.25C16 7.664 16.336 8 16.75 8H17.5ZM17.5 14H16.75C16.5511 14 16.3603 14.079 16.2197 14.2197C16.079 14.3603 16 14.5511 16 14.75V15.5H16.75C16.9489 15.5 17.1397 15.421 17.2803 15.2803C17.421 15.1397 17.5 14.9489 17.5 14.75V14ZM3.5 14.75C3.5 15.164 3.836 15.5 4.25 15.5H5V14.75C5 14.5511 4.92098 14.3603 4.78033 14.2197C4.63968 14.079 4.44891 14 4.25 14H3.5V14.75ZM4.401 18.5C4.66438 18.9562 5.04324 19.335 5.49948 19.5983C5.95571 19.8616 6.47323 20.0002 7 20H17.25C17.8738 20 18.4915 19.8771 19.0677 19.6384C19.644 19.3997 20.1677 19.0498 20.6088 18.6088C21.0498 18.1677 21.3997 17.644 21.6384 17.0677C21.8771 16.4915 22 15.8738 22 15.25V10C22.0002 9.47323 21.8616 8.95571 21.5983 8.49948C21.335 8.04324 20.9562 7.66438 20.5 7.401V15.25C20.5 16.112 20.1576 16.9386 19.5481 17.5481C18.9386 18.1576 18.112 18.5 17.25 18.5H4.401Z"
+                                                fill="#7541CA" />
+                                        </svg>
+                                    </div>تمويل يصل إلى 5,000,000 جنيه
+                                </li>
+                                <li class="flex items-center gap-2 text-[16px]">
+                                    <div
+                                        class="flex items-center justify-center bg-[#F2EFFB] p-2 rounded-full w-[36px] h-[36px]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none">
+                                            <path
+                                                d="M2 12C2 8.229 2 6.343 3.172 5.172C4.344 4.001 6.229 4 10 4H14C17.771 4 19.657 4 20.828 5.172C21.999 6.344 22 8.229 22 12V14C22 17.771 22 19.657 20.828 20.828C19.656 21.999 17.771 22 14 22H10C6.229 22 4.343 22 3.172 20.828C2.001 19.656 2 17.771 2 14V12Z"
+                                                stroke="#7541CA" stroke-width="1.5" />
+                                            <path d="M7 4V2.5M17 4V2.5M2.5 9H21.5" stroke="#7541CA" stroke-width="1.5"
+                                                stroke-linecap="round" />
+                                            <path
+                                                d="M18 17C18 17.2652 17.8946 17.5196 17.7071 17.7071C17.5196 17.8946 17.2652 18 17 18C16.7348 18 16.4804 17.8946 16.2929 17.7071C16.1054 17.5196 16 17.2652 16 17C16 16.7348 16.1054 16.4804 16.2929 16.2929C16.4804 16.1054 16.7348 16 17 16C17.2652 16 17.5196 16.1054 17.7071 16.2929C17.8946 16.4804 18 16.7348 18 17ZM18 13C18 13.2652 17.8946 13.5196 17.7071 13.7071C17.5196 13.8946 17.2652 14 17 14C16.7348 14 16.4804 13.8946 16.2929 13.7071C16.1054 13.5196 16 13.2652 16 13C16 12.7348 16.1054 12.4804 16.2929 12.2929C16.4804 12.1054 16.7348 12 17 12C17.2652 12 17.5196 12.1054 17.7071 12.2929C17.8946 12.4804 18 12.7348 18 13ZM13 17C13 17.2652 12.8946 17.5196 12.7071 17.7071C12.5196 17.8946 12.2652 18 12 18C11.7348 18 11.4804 17.8946 11.2929 17.7071C11.1054 17.5196 11 17.2652 11 17C11 16.7348 11.1054 16.4804 11.2929 16.2929C11.4804 16.1054 11.7348 16 12 16C12.2652 16 12.5196 16.1054 12.7071 16.2929C12.8946 16.4804 13 16.7348 13 17ZM13 13C13 13.2652 12.8946 13.5196 12.7071 13.7071C12.5196 13.8946 12.2652 14 12 14C11.7348 14 11.4804 13.8946 11.2929 13.7071C11.1054 13.5196 11 13.2652 11 13C11 12.7348 11.1054 12.4804 11.2929 12.2929C11.4804 12.1054 11.7348 12 12 12C12.2652 12 12.5196 12.1054 12.7071 12.2929C12.8946 12.4804 13 12.7348 13 13ZM8 17C8 17.2652 7.89464 17.5196 7.70711 17.7071C7.51957 17.8946 7.26522 18 7 18C6.73478 18 6.48043 17.8946 6.29289 17.7071C6.10536 17.5196 6 17.2652 6 17C6 16.7348 6.10536 16.4804 6.29289 16.2929C6.48043 16.1054 6.73478 16 7 16C7.26522 16 7.51957 16.1054 7.70711 16.2929C7.89464 16.4804 8 16.7348 8 17ZM8 13C8 13.2652 7.89464 13.5196 7.70711 13.7071C7.51957 13.8946 7.26522 14 7 14C6.73478 14 6.48043 13.8946 6.29289 13.7071C6.10536 13.5196 6 13.2652 6 13C6 12.7348 6.10536 12.4804 6.29289 12.2929C6.48043 12.1054 6.73478 12 7 12C7.26522 12 7.51957 12.1054 7.70711 12.2929C7.89464 12.4804 8 12.7348 8 13Z"
+                                                fill="#7541CA" />
+                                        </svg>
+                                    </div>
+                                    فترات سداد مرنة تصل لـ 36 شهر
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <footer class="modal-footer modal-footer--single p-4">
+                        <div class="flex gap-2 items-center ">
+                            <img src="./assets/img/fra.svg" alt="">
+                            <p id="modal-description" class="tiny-note">
+                                ترخيص الهيئة العامة للرقابة المالية لتمويل المشروعات المتوسطة والصغيرة رقم (10)
+                            </p>
+                        </div>
+                        <button class="btn btn--primary" type="button" data-next>ابدأ طلب التمويل</button>
+                    </footer>
+                </section>
+
+                <section class="modal-view modal-view--step2 pt-4" data-step="2" aria-hidden="true">
+                    <form class="step-form" novalidate>
+                        <h2 class="title-sub px-4">تأكيد بياناتك الشخصية</h2>
+
+                        <div class="field-grid px-4">
+                            <label class="field">
+                                <span>الاسم</span>
+                                <input id="applicant-name" type="text" placeholder="محمد محمود أشرف" required />
+                                <span class="field-message" data-error-for="name" hidden></span>
+                            </label>
+                            <label class="field">
+                                <span>الرقم</span>
+                                <input id="applicant-phone" type="tel" inputmode="numeric" placeholder="01238437583"
+                                    required />
+                                <span class="field-message" data-error-for="phone" hidden></span>
+                            </label>
+                        </div>
+
+                        <div class="px-4">
+                            <h3 class="section-title">كلمنا عن شركتك</h3>
+                            <label class="field custom-select">
+                                <span> <em>*</em> المحافظة </span>
+                                <div class="custom-select__control" data-custom-select>
+                                    <input type="hidden" name="governorate-review" value="اختر المحافظة" />
+                                    <button class="custom-select__trigger" type="button" aria-haspopup="listbox"
+                                        aria-expanded="false">
+                                        <span class="custom-select__value !mb-0">اختر المحافظة</span>
+                                        <i class="fa-solid fa-angle-down custom-select__icon" aria-hidden="true"></i>
+                                    </button>
+                                    <ul class="custom-select__menu" aria-label="المحافظة">
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option is-selected"
+                                                data-value="القاهرة">القاهرة</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="الجيزة">الجيزة</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="الإسكندرية">الإسكندرية</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="الدقهلية">الدقهلية</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="البحر الأحمر">البحر الأحمر</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="البحيرة">البحيرة</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="الفيوم">الفيوم</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="الغربية">الغربية</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="الإسماعيلية">الإسماعيلية</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="المنوفية">المنوفية</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="المنيا">المنيا</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="القليوبية">القليوبية</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="الوادي الجديد">الوادي الجديد</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="السويس">السويس</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="أسوان">أسوان</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="أسيوط">أسيوط</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="بني سويف">بني سويف</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="بورسعيد">بورسعيد</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="دمياط">دمياط</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="الشرقية">الشرقية</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="جنوب سيناء">جنوب سيناء</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="كفر الشيخ">كفر الشيخ</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="مطروح">مطروح</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="الأقصر">الأقصر</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="قنا">قنا</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="شمال سيناء">شمال سيناء</button>
+                                        </li>
+                                        <li class="custom-select__item">
+                                            <button type="button" class="custom-select__option"
+                                                data-value="سوهاج">سوهاج</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <span class="field-message" data-error-for="governorate" hidden></span>
+                            </label>
+                        </div>
+
+                        <div class="upload-zone px-4">
+                            <p class="upload-zone__label"><em>*</em> صورة البطاقة الضريبية </p>
+                            <input id="tax-card-file" class="upload-input" type="file" accept=".png,.jpg,.jpeg,.pdf"
+                                required />
+                            <input id="tax-card-camera" class="upload-input" type="file" accept="image/*"
+                                capture="environment" />
+                            <div id="upload-area-trigger" class="flex flex-col upload-placeholder upload-empty-state p-4" role="button" tabindex="0" aria-label="رفع مستند">
+                                <div class="flex  flex ">
+                                    <span class="upload-empty-state">
+                                        <i class="fa-solid fa-arrow-up-from-bracket" aria-hidden="true"></i>
+                                        <strong>اضغط لرفع الصورة</strong>
+                                        <small>(بيكسل 400x800 كحد أدني) PNG أو JPG أو PDF</small>
+                                    </span>
+                                    <span class="upload-preview-state" aria-hidden="true">
+                                        <img class="upload-preview-image" alt="معاينة صورة البطاقة الضريبية" />
+                                        <span class="upload-change-btn" title="تغيير الصورة">
+                                            <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="!w-full flex flex-col items-center">
+                                    <div class="upload-or-divider ">أو</div>
+                                    <button type="button" class="btn btn--camera " id="open-camera-btn">
+                                        فتح الكاميرا
+                                    </button>
+                                </div>
+                            </div>
+                            <span class="field-message upload-zone__message" data-error-for="tax-card" hidden></span>
+                        </div>
+
+                        <label class="consent-check px-4 mb-4" aria-label="الموافقة على مشاركة البيانات">
+                            <input class="consent-check__input" type="checkbox" required />
+                            <span class="consent-check__text">بتقديم هذا الطلب، أنت توافق على مشاركة بياناتك مع شركة
+                                إرادة</span>
+                        </label>
+                        <span class="field-message consent-message px-4" data-error-for="consent" hidden></span>
+
+                        <footer class="modal-footer step2-footer p-4 ">
+                            <button class="btn btn--primary" type="button" data-next>تقديم الطلب الآن</button>
+                        </footer>
+                    </form>
+                </section>
+
+                <section class="modal-view" data-step="3" aria-hidden="true">
+                    <div class="submission-body submission-body--compact">
+                        <div class="submission-icon-wrap" aria-hidden="true">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <h3 class="submission-heading">تم إرسال طلبك بنجاح</h3>
+                        <p class="submission-copy">
+                            جاري مراجعة بياناتك من قبل فريق إرادة، سنتواصل معك
+                            قريبًا لاستكمال باقي الخطوات.
+                        </p>
+                    </div>
+
+                    <footer class="submission-footer submission-footer--inline">
+                        <button class="btn btn--primary submission-btn" type="button" data-reset>
+                            العودة للرئيسية
+                        </button>
+                    </footer>
+                </section>
+            </div>
+        </dialog>
+    </main>
+
+    <script src="./assets/js/script.js"></script>
+</body>
+
+</html>
